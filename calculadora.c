@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <locale.h>
 
 int main() {
@@ -80,6 +80,5 @@ int main() {
     } while (repete == 's');
 
     printf("Obrigado por usar a calculadora! Até a próxima.\n");
-
     return 0;
 }
