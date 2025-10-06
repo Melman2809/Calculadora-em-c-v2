@@ -1,19 +1,20 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 #include <locale.h>
+#include <ctype.h>
+
+void limpar_buffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
 
 int main() {
-    // Nova tentativa: Configurando o locale para UTF-8.
-    // Isso pode funcionar melhor em terminais modernos como o do VS Code.
-    // IMPORTANTE: Se os acentos ainda não aparecerem, salve este arquivo com codificação UTF-8
-    // e, antes de executar o programa, rode o comando 'chcp 65001' no seu terminal.
     setlocale(LC_ALL, ".UTF8");
 
     int opcao;
-    float a, b; // Usando float para permitir números decimais e divisão correta
+    float a, b;
     char repete;
 
     do {
-        // Menu de opções
         printf("===============================\n");
         printf("    Calculadora Simples\n");
         printf("===============================\n");
@@ -24,28 +25,41 @@ int main() {
         printf("4. Divisão\n");
         printf("5. Sair\n");
         printf("Opção: ");
-        scanf("%d", &opcao);
+
+        if (scanf("%d", &opcao) != 1) {
+            printf("\nErro: Entrada inválida. Por favor, digite um número de 1 a 5.\n\n");
+            limpar_buffer();
+            continue;
+        }
+        limpar_buffer();
         printf("\n");
 
-        // Opção de sair
         if (opcao == 5) {
-            break; // Sai do loop principal
+            break;
         }
 
-        // Validação da opção do menu
         if (opcao < 1 || opcao > 4) {
             printf("Erro: Opção inválida. Tente novamente.\n\n");
-            continue; // Volta para o início do loop e mostra o menu de novo
+            continue;
         }
 
-        // Leitura dos números
         printf("Digite o primeiro número: ");
-        scanf("%f", &a);
+        if (scanf("%f", &a) != 1) {
+            printf("\nErro: Número inválido. Tente novamente.\n\n");
+            limpar_buffer();
+            continue;
+        }
+        limpar_buffer();
+
         printf("Digite o segundo número: ");
-        scanf("%f", &b);
+        if (scanf("%f", &b) != 1) {
+            printf("\nErro: Número inválido. Tente novamente.\n\n");
+            limpar_buffer();
+            continue;
+        }
+        limpar_buffer();
         printf("\n");
 
-        // Execução da operação
         switch (opcao) {
             case 1:
                 printf("Resultado: %.2f + %.2f = %.2f\n", a, b, a + b);
@@ -65,10 +79,11 @@ int main() {
                 break;
         }
 
-        // Pergunta se o usuário quer realizar outra operação
         do {
             printf("\nDeseja realizar outra operação? (s/n): ");
             scanf(" %c", &repete);
+            repete = tolower(repete);
+            limpar_buffer();
 
             if (repete != 's' && repete != 'n') {
                 printf("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.\n");
@@ -80,5 +95,6 @@ int main() {
     } while (repete == 's');
 
     printf("Obrigado por usar a calculadora! Até a próxima.\n");
+
     return 0;
 }
